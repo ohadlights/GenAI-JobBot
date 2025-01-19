@@ -31,8 +31,7 @@ def validate_data_folder(data_folder: Path) -> tuple:
     ]
     if missing_files:
         raise FileNotFoundError(
-            f"Missing files in the data folder: {
-                                ', '.join(missing_files)}"
+            f"Missing files in the data folder: {', '.join(missing_files)}"
         )
 
     return (
@@ -48,28 +47,25 @@ def validate_yaml_file(yaml_path: Path) -> dict:
 
 
 def validate_boolean_fields(
-    fields: list, parameters: dict, category: str, config_yaml_path: Path
+        fields: list, parameters: dict, category: str, config_yaml_path: Path
 ):
     for key in parameters[category].keys():
         if key not in fields:
             raise ValueError(
-                f"Invalid field '{key}' in {
-                category} in config file {config_yaml_path}"
+                f"Invalid field '{key}' in {category} in config file {config_yaml_path}"
             )
 
     for field in fields:
         if not isinstance(parameters[category].get(field), bool):
             raise ValueError(
-                f"{category.capitalize()} '{
-                field}' must be a boolean in config file {config_yaml_path}"
+                f"{category.capitalize()} '{field}' must be a boolean in config file {config_yaml_path}"
             )
 
 
 def validate_string_list(parameters: dict, category: str, config_yaml_path: Path):
     if not all(isinstance(item, str) for item in parameters[category]):
         raise ValueError(
-            f"'{category}' must be a list of strings in config file {
-            config_yaml_path}"
+            f"'{category}' must be a list of strings in config file {config_yaml_path}"
         )
 
 
@@ -89,13 +85,11 @@ def validate_config(config_yaml_path: Path) -> dict:
     for key, expected_type in required_keys.items():
         if key not in parameters:
             raise ValueError(
-                f"Missing or invalid key '{
-                key}' in config file {config_yaml_path}"
+                f"Missing or invalid key '{key}' in config file {config_yaml_path}"
             )
         elif not isinstance(parameters[key], expected_type):
             raise ValueError(
-                f"Invalid type for key '{key}' in config file {
-                config_yaml_path}. Expected {expected_type}, received {type(parameters[key])}."
+                f"Invalid type for key '{key}' in config file {config_yaml_path}. Expected {expected_type}, received {type(parameters[key])}."
             )
 
     experience_levels = [
@@ -168,6 +162,9 @@ def get_browser():
     options.add_argument("--disable-animations")
     options.add_argument("--disable-cache")
 
+    if (proxy := os.environ.get("PROXY", None)) is not None:
+        options.add_argument("--proxy-server=%s" % proxy)
+
     if browser_name in ["Chrome", "Edge"]:
         options.add_experimental_option(
             "excludeSwitches", ["enable-automation", "enable-logging"]
@@ -209,8 +206,7 @@ def get_env_variable(var_name: str) -> str:
     value = os.getenv(var_name)
     if not value:
         raise ValueError(
-            f"Environment variable '{
-                         var_name}' is not set or is empty."
+            f"Environment variable '{var_name}' is not set or is empty."
         )
     return value
 

@@ -316,8 +316,7 @@ class GPTAnswerer:
                 section_name,
             )
             raise ValueError(
-                f"Section '{
-                             section_name}' not found in either resume or job_application_profile."
+                f"Section '{section_name}' not found in either resume or job_application_profile."
             )
         chain = chains.get(section_name)
         if chain is None:

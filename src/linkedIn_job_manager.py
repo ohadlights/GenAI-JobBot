@@ -162,8 +162,7 @@ class LinkedInJobManager:
         failed_applications = 0
         for position, location in searches:
             job_page_number = -1
-            logger.info(f"Starting the search for position {
-                        position} in {location}.")
+            logger.info(f"Starting the search for position {position} in {location}.")
             while True:
                 job_page_number += 1
                 url = "https://www.linkedin.com/jobs/search/"+self.base_search_url + \
@@ -175,8 +174,7 @@ class LinkedInJobManager:
                 time.sleep(random.uniform(3, 5))
 
                 if (self._job_lefs() == False):
-                    logger.info(f'No jobs left, applications = {
-                        successful_applications}/{failed_applications}')
+                    logger.info(f'No jobs left, applications = {successful_applications}/{failed_applications}')
                     break
 
                 try:
@@ -198,30 +196,25 @@ class LinkedInJobManager:
                                 time.sleep(random.uniform(3, 5))
 
                                 if (self._daily_application_exceeded() == True):
-                                    logger.info(f'Daily applications exceeded, applications = {
-                                                successful_applications}/{failed_applications}')
+                                    logger.info(f'Daily applications exceeded, applications = {successful_applications}/{failed_applications}')
                                     return
 
-                                logger.info(f"Applying for job: {
-                                            job.title} at {job.company} {job.link}")
+                                logger.info(f"Applying for job: {job.title} at {job.company} {job.link}")
                                 self.easy_applier_component.job_apply(job)
                                 successful_applications += 1
-                                logger.info(f'Successfully applied to job {job.title} at {job.company} {job.link}, applications = {
-                                            successful_applications}/{failed_applications}')
+                                logger.info(f'Successfully applied to job {job.title} at {job.company} {job.link}, applications = {successful_applications}/{failed_applications}')
                                 self._save_job(
                                     job=job, applied=True, connected=True if job.recruiter == '' else False)
                         except Exception:
                             failed_applications += 1
-                            logger.info(f'Failed applying to job {job.title} at {job.company}, applications = {
-                                successful_applications}/{failed_applications}')
+                            logger.info(f'Failed applying to job {job.title} at {job.company}, applications = {successful_applications}/{failed_applications}')
                             self._save_job(
                                 job, applied=False, connected=True if job.recruiter == '' else False)
                             continue
                 except Exception as e:
                     logger.error("Error during job application: %s", e)
                     continue
-                logger.info(f'Applying to jobs on this page has been completed, applications = {
-                    successful_applications}/{failed_applications}')
+                logger.info(f'Applying to jobs on this page has been completed, applications = {successful_applications}/{failed_applications}')
                 time.sleep(random.uniform(5, 10))
 
     def _job_lefs(self) -> bool:
@@ -278,8 +271,7 @@ class LinkedInJobManager:
                             f'{job.company} is blacklisted, skipping')
                         continue
 
-                    logger.info(f"Applying for job: {
-                        job.title} at {job.company}")
+                    logger.info(f"Applying for job: {job.title} at {job.company}")
                     if self.easy_applier_component.job_apply(job=job) == True:
                         logger.info("Reaplied succeed")
                         self._save_job(job=job, applied=True,
