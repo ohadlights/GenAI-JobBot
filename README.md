@@ -60,7 +60,7 @@ CREATE TABLE jobs (
     id SERIAL PRIMARY KEY,
     company VARCHAR(255),
     title VARCHAR(255),
-    link TEXT,
+    link TEXT UNIQUE,
     recruiter TEXT,
     location VARCHAR(255),
     applied BOOLEAN,
