@@ -144,15 +144,14 @@ class LinkedInJobManager:
                 conn.close()
 
     def run(self):
-        if ('reapply' in self.mode):
+        if 'reapply' in self.mode:
             self.reapply()
-        elif ('reconnect' in self.mode):
+        elif 'reconnect' in self.mode:
             self.reconnect()
         else:
             self.apply()
 
-        self.browser.get(
-            'https://www.linkedin.com/feed')
+        self.browser.get('https://www.linkedin.com/feed')
 
     def apply(self):
         logger.info("Starting job application process")
@@ -173,7 +172,7 @@ class LinkedInJobManager:
                 self.browser.get(url)
                 time.sleep(random.uniform(3, 5))
 
-                if (self._job_lefs() == False):
+                if not self._job_lefs():
                     logger.info(f'No jobs left, applications = {successful_applications}/{failed_applications}')
                     break
 
@@ -188,14 +187,13 @@ class LinkedInJobManager:
                         try:
                             if job.apply_method == 'Easy Apply':
                                 if job.company.strip() in self.companies_blacklist:
-                                    logger.info(
-                                        f'{job.company} is blacklisted, skipping')
+                                    logger.info(f'{job.company} is blacklisted, skipping')
                                     continue
 
                                 self.browser.get(job.link)
                                 time.sleep(random.uniform(3, 5))
 
-                                if (self._daily_application_exceeded() == True):
+                                if self._daily_application_exceeded():
                                     logger.info(f'Daily applications exceeded, applications = {successful_applications}/{failed_applications}')
                                     return
 
@@ -219,11 +217,9 @@ class LinkedInJobManager:
 
     def _job_lefs(self) -> bool:
         try:
-            no_jobs_element = self.browser.find_element(
-                By.CLASS_NAME, 'jobs-search-no-results-banner')
+            no_jobs_element = self.browser.find_element(By.CLASS_NAME, 'jobs-search-no-results-banner')
             if no_jobs_element and 'No matching jobs found' in no_jobs_element.text:
-                logger.info(
-                    "No matching jobs found.")
+                logger.info("No matching jobs found.")
                 return False
         except NoSuchElementException:
             pass
